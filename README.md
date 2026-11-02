@@ -1,14 +1,14 @@
-# WhateverXe Graphics 0.3.2 — 本地移植包
+# WhateverXe Graphics 0.4.0 — 本地移植包
 
-本目录包含修改后的 WhateverXe 0.6.1 完整源码、MacKernelSDK 和 Lilu 编译依赖，以及官方 WhateverXe Graphics 0.3.2 原始 pkg。**实际修改的是 WhateverXe 插件；Graphics 中的 Apple 图形二进制保持原样，并非重新开源或重新编译 Apple 驱动。**
+本目录包含基于上游 WhateverXe 0.7.0（d0b7fb6275ca51fde088fa7e91595462bd457ec9）的完整源码和本地修复。MacKernelSDK、Lilu 和官方 Graphics 0.4.0 pkg 由 bootstrap 下载并校验。**实际修改的是 WhateverXe 插件；Graphics 中的 Apple 图形二进制保持原样，并非重新开源或重新编译 Apple 驱动。**
 
 ## 适用范围
 
-仅针对 macOS 15.8.2 build 24H232。本机 i7-13700H / A7A0 / 1920×1200 eDP 已验证图形加速和 Metal 2。其他电脑的面板、电源、接口可能不同，不能保证兼容。pkg 会限制系统版本；硬件条件继续由驱动检查。
+仅针对 macOS 15.8.2 build 24H232。旧版组合在 i7-13700H / A7A0 / 1920×1200 eDP 上已验证图形加速和 Metal 2；本次升级组合需重启后重新验证。其他电脑的面板、电源、接口可能不同，不能保证兼容。pkg 会限制系统版本；硬件条件继续由驱动检查。
 
 ## 包含的修改
 
-1. 24H232 的 IOProtectCacheMode 调用校验适配；保留其他内核校验。
+1. 原先针对 24H232 的固定调用字节补丁由上游 0.7.0 的指令解码及调用目标检查接替，保留内核指令、参数与栈布局检查。
 2. 内屏固件启动画面专用端口检查，允许接管时模式暂为 0，保留运行期模式要求及电源、链路检查。
 3. 诊断记录 WEXLocalPortDiagnostic / WEXLocalHandoffDiagnostic / WEXLocalBootPanelQualified。
 4. 最低亮度设为 1311/65535（约 2% PWM），熄屏电源路径保持独立。此项已编译及测试，实际最低亮度尚待用户确认。
@@ -24,7 +24,7 @@
 4. 从该 EFI 启动 macOS 后安装 target 中的 pkg，重启。pkg 保留官方图形安装流程，另把本地插件和说明放到 `/Library/Application Support/WhateverXe-Port`。**pkg 不自动挂载/改写 EFI，也不替你启用插件。**
 5. 如控制中心出现已确认的 Target device architecture is nil 崩溃，以登录用户运行 `bash tools/controlcenter-workaround.sh`。撤销：`defaults delete com.apple.controlcenter METAL_ERROR_MODE`，然后重启控制中心。
 
-已安装过 Graphics 0.3.2 的机器通常只需更新 EFI 插件。
+从 Graphics 0.3.2 升级时，应同时更新本项目 EFI 插件和 Graphics 0.4.0，避免新旧组件混用。完整保留上游签名 payload；新版包含 Metal/视频驱动的系统更新兼容性修复。
 
 ## 构建
 
@@ -40,11 +40,11 @@ python3 tools/build.py --rebuild
 
 ## 验证与回退
 
-本次插件测试 158 项通过；不等于其他机器硬件验证。原始工程 LICENSE.txt 及依赖许可证保留在 source。图形 payload 的权利归原权利人；本目录没有 Apple 驱动源码。
+本版本 203 项 CPU/mock 测试全部通过，包含保留的内屏和亮度回归；本机 24H232 真实内核的指令、调用目标及私有 pmap 访问器校验通过。测试不等于重启后或其他机器的硬件验证。原始工程 LICENSE.txt 及依赖许可证保留在 source。图形 payload 的权利归原权利人；本目录没有 Apple 驱动源码。
 
 EFI 回退：从 install-efi.sh 产生的桌面备份恢复 WhateverXe.kext 和需要恢复的配置。Graphics 卸载使用上游工具 https://github.com/b00t0x/WhateverXe-Graphics 。
 
-上游：https://github.com/b00t0x/WhateverXe （0.6.1）、https://github.com/b00t0x/WhateverXe-Graphics （0.3.2）。
+上游：https://github.com/b00t0x/WhateverXe （0.7.0）、https://github.com/b00t0x/WhateverXe-Graphics （0.4.0）。
 
 ## GitHub 构建和发布
 
