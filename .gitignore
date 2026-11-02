@@ -1,0 +1,12 @@
+/target/
+/artifacts/
+/vendor/
+/docs/build-manifest.json
+/docs/tests.txt
+/source/WhateverXe/build/
+/source/WhateverXe/Lilu.kext/
+/source/WhateverXe/MacKernelSDK/
+/source/WhateverXe/.github/
+.DS_Store
+__pycache__/
+*.pyc
