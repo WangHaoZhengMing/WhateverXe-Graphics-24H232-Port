@@ -1,6 +1,7 @@
 // Copyright (c) 2026 b00t0x. BSD-3-Clause.
 #include "kern_xe_data_access.hpp"
 #include "kern_xe_data_policy.hpp"
+#include "kern_xe_metal_leak.hpp"
 #include <Headers/kern_api.hpp>
 #include <IOKit/IORegistryEntry.h>
 #include <libkern/OSAtomic.h>
@@ -97,6 +98,7 @@ void XeDataAccess::processKernel(KernelPatcher &p) {
         signingIdentity && platformBinary && signatureValid);
     enabled = currentProcess && executableVnode && fileVnode && getPath && putVnode;
     IORegistryEntry::getRegistryRoot()->setProperty("WhateverXeDataAccessSymbols", enabled);
+    XeMetalLeak::processKernel(p);
 }
 bool XeDataAccess::processKext(KernelPatcher &p, size_t index, mach_vm_address_t address, size_t size) {
     if (index != sandbox.loadIndex) return false;

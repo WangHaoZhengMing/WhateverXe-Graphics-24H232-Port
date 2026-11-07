@@ -1,17 +1,18 @@
 {
   "WhateverXe": {
     "repository": "https://github.com/b00t0x/WhateverXe",
-    "tag": "0.7.0",
-    "commit": "d0b7fb6275ca51fde088fa7e91595462bd457ec9"
+    "tag": "0.8.0",
+    "commit": "db438fdf4d5fe903f5dfbc65537ed3884e2ea980"
   },
   "WhateverXe-Graphics": {
     "repository": "https://github.com/b00t0x/WhateverXe-Graphics",
-    "tag": "v0.4.0",
-    "package_sha256": "7a1b5015b3e6e8b522f26c25df85c313471c9142564a0b57356cddd2c88b9510"
+    "tag": "v0.4.1",
+    "package_sha256": "7f7ce3b924ad421cff0c4f30534598858474b8c9539c4b889a461bc1d5fed02c"
   },
   "local_changes": [
     "early eDP boot panel handoff qualification and diagnostics",
     "2% PWM brightness floor",
+    "runtime kernel page patch fixing AppleIntelTGLGraphicsMTLDriver 72 KB/command-buffer POSH memory leak (upstream #47)",
     "optional per-user ControlCenter workaround"
   ],
   "superseded_changes": [
